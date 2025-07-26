@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/providers/theme-providers";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 import { Toaster } from "@/components/ui/sonner";
@@ -26,16 +27,23 @@ export default async function RootLayout({
   const session = await auth()
   return (
     <SessionProvider session={session}>
-      <html lang="en" suppressHydrationWarning>
-        <body
-          className={` ${poppins.className} antialiased`}
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={` ${poppins.className} antialiased`}
+      >
+        <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
         >
-          <div className="flex flex-col min-h-screen">
-            <Toaster />
-            <div className="flex-1">{children}</div>
-          </div>
-        </body>
-      </html>
+            <div className="flex flex-col min-h-screen">
+              <Toaster/>
+              <div className="flex-1">{children}</div>
+            </div>
+        </ThemeProvider>
+      </body>
+    </html>
     </SessionProvider>
   );
 }
