@@ -13,7 +13,45 @@ type ValidTemplate =
   | "GSAP_SVELTE" | "GSAP_SVELTEKIT" | "GSAP_VUE" | "SVELTEKIT" 
   | "STATIC" | "JSON_SERVER" | "JSON_GRAPHQL" | "SLIDEV" 
   | "TUTORIALKIT" | "TRES" | "BOLT_VITE_REACT" | "BOLT_EXPO" 
-  | "BOLT_QWIK" | "BOLT_REMOTION" | "RXJS" | "NODEMON" | "EGG" | "TEST";
+  | "BOLT_QWIK" | "BOLT_REMOTION" | "RXJS" | "NODEMON" | "EGG" | "TEST" | "GITHUB_IMPORT";
+
+
+export const createPlaygroundFromGitHub = async (data: {
+  title: string;
+  description?: string;
+  templateData: TemplateFolder;
+}) => {
+  const user = await currentUser();
+  if (!user?.id) {
+    throw new Error("User not authenticated");
+  }
+
+  try {
+    // Create the playground
+    const playground = await db.playground.create({
+      data: {
+        title: data.title,
+        description: data.description,
+        template: "GITHUB_IMPORT" as any,
+        userId: user.id,
+      },
+    });
+
+    // Create the template file with the GitHub data
+    await db.templateFile.create({
+      data: {
+        playgroundId: playground.id,
+        content: JSON.stringify(data.templateData),
+      },
+    });
+
+    revalidatePath("/dashboard");
+    return playground;
+  } catch (error) {
+    console.error("Error creating playground from GitHub:", error);
+    throw new Error("Failed to create playground from GitHub repository");
+  }
+};
 
 
 // Toggle marked status for a problem

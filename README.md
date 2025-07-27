@@ -32,19 +32,24 @@
 - **Package Management**: NPM package installation and dependency management
 - **Terminal Integration**: Full-featured terminal with command execution
 
+### � GitHub Integration
+- **Repository Import**: Direct import of GitHub repositories into the editor
+- **Automatic Structure Detection**: Smart recognition of project frameworks and languages  
+- **Branch Selection**: Choose specific branches to import
+- **File Tree Generation**: Complete project structure recreation
+- **Metadata Preservation**: Maintain repository information and descriptions
+
 ### 🗂️ Advanced File Management
 - **Interactive File Explorer**: Intuitive tree-view with file operations
 - **Drag & Drop Support**: Easy file organization and management
 - **Git Integration**: Version control with branch management (planned)
 - **Project Templates**: 25+ pre-configured starter templates
 
-### 🎨 Modern UI/UX
+### � Modern UI/UX
 - **Responsive Design**: Optimized for desktop and mobile devices
 - **Component Library**: Built with Radix UI and Tailwind CSS
 - **Accessibility First**: WCAG 2.1 compliant interface
 - **Customizable Workspace**: Resizable panels and configurable layouts
-
-## 🏗️ Technical Architecture
 
 ### Core Technologies
 - **Framework**: Next.js 15.4.4 with App Router
@@ -99,6 +104,10 @@
    
    Configure the following variables:
    ```env
+   # GitHub OAuth (Required for repository import)
+   GITHUB_ID=your_github_client_id
+   GITHUB_SECRET=your_github_client_secret
+   
    # OpenRouter AI Integration
    OPENROUTER_API_KEY=your_openrouter_api_key
    OPENROUTER_MODEL=anthropic/claude-3.5-sonnet
@@ -121,7 +130,19 @@
 5. **Access the Application**
    Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## 📖 Usage Guide
+### Usage Guide
+
+### Importing GitHub Repositories
+1. **Sign in with GitHub**: Authenticate using your GitHub account
+2. **Access Import**: Click "Open GitHub Repository" on the dashboard
+3. **Browse Repositories**: Search and filter your repositories
+4. **Select Repository**: Choose the repository and branch to import
+5. **Automatic Import**: The system will:
+   - Fetch all repository files
+   - Detect the project framework/language
+   - Create appropriate folder structure
+   - Set up the development environment
+6. **Start Coding**: Begin editing in the fully-featured IDE
 
 ### Creating a New Playground
 1. Navigate to the dashboard

@@ -9,6 +9,7 @@ export type ExtendedUser = DefaultSession["user"] & {
 declare module "next-auth"{
     interface Session{
         user:ExtendedUser
+        accessToken?: string
     }
 }
 
@@ -18,5 +19,6 @@ import {JWT} from "next-auth/jwt";
 declare module "next-auth/jwt"{
     interface JWT{
         role:UserRole;
+        accessToken?: string;
     }
 }

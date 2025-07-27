@@ -95,6 +95,7 @@ enum Templates {
   NODEMON
   EGG
   TEST
+  GITHUB_IMPORT
 }
 
 model Playground {

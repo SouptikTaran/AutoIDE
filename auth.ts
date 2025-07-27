@@ -113,6 +113,11 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       token.email = existingUser.email;
       token.role = existingUser.role;
 
+      // Include GitHub access token if available
+      if (exisitingAccount && exisitingAccount.provider === "github") {
+        token.accessToken = exisitingAccount.accessToken;
+      }
+
       return token;
     },
 
@@ -124,6 +129,11 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 
     if(token.sub && session.user){
       session.user.role = token.role
+    }
+
+    // Include access token in session
+    if (token.accessToken) {
+      session.accessToken = token.accessToken;
     }
 
     return session;
