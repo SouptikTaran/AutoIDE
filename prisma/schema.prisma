@@ -14,38 +14,39 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum UserRole{
+enum UserRole {
   ADMIN
   USER
   PREMIUM_USER
 }
 
-model User{
-  id      String      @id @default(cuid())
-  name    String?
-  email   String      @unique
-  image   String?
+model User {
+  id    String  @id @default(cuid())
+  name  String?
+  email String  @unique
+  image String?
 
-  accounts  Account[]  
-  role      UserRole   @default(USER)
-  createdAt   DateTime  @default(now())
-  updatedAt    DateTime @updatedAt
+  accounts   Account[]
+  role       UserRole     @default(USER)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  Playground Playground[]
+  StarMark   StarMark[]
 }
 
-
 model Account {
-  id                String  @id @default(cuid()) 
-  userId            String 
+  id                String  @id @default(cuid())
+  userId            String
   type              String
   provider          String
   providerAccountId String
-  refreshToken      String? 
-  accessToken       String? 
-  expiresAt         Int?    
+  refreshToken      String?
+  accessToken       String?
+  expiresAt         Int?
   tokenType         String?
   scope             String?
   idToken           String?
-  sessionState      String? 
+  sessionState      String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -53,3 +54,35 @@ model Account {
   @@index([userId])
 }
 
+enum Templates {
+  REACT
+  NEXTJS
+  EXPRESS
+  VUE
+  HONO
+  ANGULAR
+}
+
+model Playground {
+  id          String     @id @default(cuid())
+  title       String
+  description String?
+  template    Templates  @default(REACT)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  Starmark    StarMark[]
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model StarMark {
+  id           String     @id @default(cuid()) @map("_id")
+  userId       String
+  playgroundId String
+  isMarked     Boolean
+  createdAt    DateTime   @default(now())
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  playground   Playground @relation(fields: [playgroundId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, playgroundId])
+}
