@@ -8,51 +8,87 @@ import { useRouter } from "next/navigation";
 import { useState } from "react"
 import { toast } from "sonner";
 
+// Define valid template types
+type ValidTemplate = 
+  | "REACT" | "NEXTJS" | "EXPRESS" | "VUE" | "HONO" | "ANGULAR"
+  | "ASTRO" | "TYPESCRIPT" | "JAVASCRIPT" | "NODE" | "BOOTSTRAP" 
+  | "GRAPHQL" | "NUXT" | "SVELTE" | "QUASAR" | "KOA" | "VITE" 
+  | "EXPO" | "QWIK" | "GSAP_REACT" | "GSAP_NEXT" | "GSAP_NUXT" 
+  | "GSAP_SVELTE" | "GSAP_SVELTEKIT" | "GSAP_VUE" | "SVELTEKIT" 
+  | "STATIC" | "JSON_SERVER" | "JSON_GRAPHQL" | "SLIDEV" 
+  | "TUTORIALKIT" | "TRES" | "BOLT_VITE_REACT" | "BOLT_EXPO" 
+  | "BOLT_QWIK" | "BOLT_REMOTION" | "RXJS" | "NODEMON" | "EGG" | "TEST";
+
 const AddNewButton = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isCreating, setIsCreating] = useState(false)
   const [selectedTemplate, setSelectedTemplate] = useState<{
     title: string;
-    template: "REACT" | "NEXTJS" | "EXPRESS" | "VUE" | "HONO" | "ANGULAR";
+    template: ValidTemplate;
     description?: string;
   } | null>(null)
   const router = useRouter()
 
   const handleSubmit = async(data: {
     title: string;
-    template: "REACT" | "NEXTJS" | "EXPRESS" | "VUE" | "HONO" | "ANGULAR";
+    template: ValidTemplate;
     description?: string;
   }) => {
-    setSelectedTemplate(data)
-    const res = await createPlayground(data);
-    toast("Playground created successfully");
-    // Here you would typically handle the creation of a new playground
-    // with the selected template data
-    console.log("Creating new playground:", data)
-    setIsModalOpen(false)
-    router.push(`/playground/${res?.id}`)
+    try {
+      setIsCreating(true)
+      setSelectedTemplate(data)
+      
+      // Show loading toast
+      toast.loading("Creating your playground...", {
+        id: "creating-playground"
+      });
+      
+      const res = await createPlayground(data);
+      
+      // Dismiss loading toast and show success
+      toast.dismiss("creating-playground");
+      toast.success("Playground created successfully! Redirecting...", {
+        duration: 2000
+      });
+      
+      console.log("Creating new playground:", data)
+      setIsModalOpen(false)
+      
+      // Small delay to show success message before redirect
+      setTimeout(() => {
+        router.push(`/playground/${res?.id}`)
+      }, 1000)
+      
+    } catch (error) {
+      // Dismiss loading toast and show error
+      toast.dismiss("creating-playground");
+      toast.error("Failed to create playground. Please try again.");
+      console.error("Error creating playground:", error);
+    } finally {
+      setIsCreating(false)
+    }
   }
 
   return (
     <>
       <div
         onClick={() => setIsModalOpen(true)}
-        className="group px-6 py-6 flex flex-row justify-between items-center border rounded-lg bg-muted cursor-pointer 
+        className="group px-6 py-6 flex flex-row justify-between items-center border border-gray-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900 cursor-pointer 
         transition-all duration-300 ease-in-out
-        hover:bg-background hover:border-[#E93F3F] hover:scale-[1.02]
-        shadow-[0_2px_10px_rgba(0,0,0,0.08)]
-        hover:shadow-[0_10px_30px_rgba(233,63,63,0.15)]"
+        hover:bg-gray-50 dark:hover:bg-slate-800 hover:border-blue-300 dark:hover:border-blue-600 hover:scale-[1.02]
+        shadow-sm hover:shadow-lg"
       >
         <div className="flex flex-row justify-center items-start gap-4">
           <Button
             variant={"outline"}
-            className="flex justify-center items-center bg-white group-hover:bg-[#fff8f8] group-hover:border-[#E93F3F] group-hover:text-[#E93F3F] transition-colors duration-300"
+            className="flex justify-center items-center bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/50 group-hover:border-blue-400 dark:group-hover:border-blue-600 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-all duration-300"
             size={"icon"}
           >
             <Plus size={30} className="transition-transform duration-300 group-hover:rotate-90" />
           </Button>
           <div className="flex flex-col">
-            <h1 className="text-xl font-bold text-[#e93f3f]">Add New</h1>
-            <p className="text-sm text-muted-foreground max-w-[220px]">Create a new playground</p>
+            <h1 className="text-xl font-bold text-blue-600 dark:text-blue-400">Add New</h1>
+            <p className="text-sm text-gray-600 dark:text-gray-400 max-w-[220px]">Create a new playground</p>
           </div>
         </div>
 
@@ -62,7 +98,7 @@ const AddNewButton = () => {
             alt="Create new playground"
             width={150}
             height={150}
-            className="transition-transform duration-300 group-hover:scale-110"
+            className="transition-transform duration-300 group-hover:scale-110 opacity-80 group-hover:opacity-100"
           />
         </div>
       </div>
@@ -71,6 +107,7 @@ const AddNewButton = () => {
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
         onSubmit={handleSubmit}
+        isCreating={isCreating}
       />
     </>
   )

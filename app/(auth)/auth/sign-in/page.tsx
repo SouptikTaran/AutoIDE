@@ -5,7 +5,6 @@ import React from 'react'
 const SignInPage = () => {
   return (
     <>
-    {/* <Image src={"/logo.svg"} alt='Logo' height={300} width={300} /> */}
     <SignInFormClient />
     </>
   )

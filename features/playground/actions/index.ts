@@ -4,6 +4,17 @@ import { db } from "@/lib/db"
 import { TemplateFolder } from "../libs/path-to-json";
 import { revalidatePath } from "next/cache";
 
+// Define valid template types
+type ValidTemplate = 
+  | "REACT" | "NEXTJS" | "EXPRESS" | "VUE" | "HONO" | "ANGULAR"
+  | "ASTRO" | "TYPESCRIPT" | "JAVASCRIPT" | "NODE" | "BOOTSTRAP" 
+  | "GRAPHQL" | "NUXT" | "SVELTE" | "QUASAR" | "KOA" | "VITE" 
+  | "EXPO" | "QWIK" | "GSAP_REACT" | "GSAP_NEXT" | "GSAP_NUXT" 
+  | "GSAP_SVELTE" | "GSAP_SVELTEKIT" | "GSAP_VUE" | "SVELTEKIT" 
+  | "STATIC" | "JSON_SERVER" | "JSON_GRAPHQL" | "SLIDEV" 
+  | "TUTORIALKIT" | "TRES" | "BOLT_VITE_REACT" | "BOLT_EXPO" 
+  | "BOLT_QWIK" | "BOLT_REMOTION" | "RXJS" | "NODEMON" | "EGG" | "TEST";
+
 
 // Toggle marked status for a problem
 export const toggleStarMarked = async (playgroundId: string, isChecked: boolean) => {
@@ -43,7 +54,7 @@ export const toggleStarMarked = async (playgroundId: string, isChecked: boolean)
 };
 export const createPlayground = async (data:{
     title: string;
-    template: "REACT" | "NEXTJS" | "EXPRESS" | "VUE" | "HONO" | "ANGULAR";
+    template: ValidTemplate;
     description?: string;
   })=>{
     const {template , title , description} = data;
@@ -54,7 +65,7 @@ export const createPlayground = async (data:{
             data:{
                 title:title,
                 description:description,
-                template:template,
+                template:template as any, // Type assertion for enum compatibility
                 userId:user?.id!
             }
         })
