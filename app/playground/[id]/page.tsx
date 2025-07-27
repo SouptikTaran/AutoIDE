@@ -44,14 +44,14 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import WebContainerPreview from "@/features/webcontainers/components/webcontainer-preveiw";
+import WebContainerPreview from "@/features/webContainers/components/webcontainer-preview";
 import LoadingStep from "@/components/ui/loader";
 import { PlaygroundEditor } from "@/features/playground/components/playground-editor";
 import ToggleAI from "@/features/playground/components/toggle-ai";
 import { useFileExplorer } from "@/features/playground/hooks/useFileExplorer";
 import { usePlayground } from "@/features/playground/hooks/usePlayground";
 import { useAISuggestions } from "@/features/playground/hooks/useAISuggestion";
-import { useWebContainer } from "@/features/webcontainers/hooks/useWebContainer";
+import { useWebContainer } from "@/features/webContainers/hooks/useWebContainer";
 import { SaveUpdatedCode } from "@/features/playground/actions";
 import { TemplateFolder } from "@/features/playground/types";
 import { findFilePath } from "@/features/playground/libs";

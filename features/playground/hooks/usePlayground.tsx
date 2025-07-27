@@ -1,180 +1,98 @@
-import { useState, useRef, useCallback } from "react";
 
-interface AISuggestionsState {
-  suggestion: string | null;
+import { useState, useEffect, useCallback } from 'react';
+import { toast } from 'sonner';
+import { getPlaygroundById, SaveUpdatedCode } from '@/features/playground/actions';
+import type { TemplateFolder } from '@/features/playground/libs/path-to-json';
+
+interface PlaygroundData {
+  id: string;
+  name?: string;
+  [key: string]: any;
+}
+
+interface UsePlaygroundReturn {
+  playgroundData: PlaygroundData | null;
+  templateData: TemplateFolder | null;
   isLoading: boolean;
-  position: { line: number; column: number } | null;
-  decoration: string[];
-  isEnabled: boolean;
+  error: string | null;
+  loadPlayground: () => Promise<void>;
+  saveTemplateData: (data: TemplateFolder) => Promise<void>;
 }
 
-interface UseAISuggestionsReturn extends AISuggestionsState {
-  toggleEnabled: () => void;
-  fetchSuggestion: (type: string, editor: any) => Promise<void>;
-  acceptSuggestion: (editor: any, monaco: any) => void;
-  rejectSuggestion: (editor: any) => void;
-  clearSuggestion: (editor: any) => void;
-}
+export const usePlayground = (id: string): UsePlaygroundReturn => {
+  const [playgroundData, setPlaygroundData] = useState<PlaygroundData | null>(null);
+  const [templateData, setTemplateData] = useState<TemplateFolder | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-export const useAISuggestions = (): UseAISuggestionsReturn => {
-  const [state, setState] = useState<AISuggestionsState>({
-    suggestion: null,
-    isLoading: false,
-    position: null,
-    decoration: [],
-    isEnabled: true,
-  });
+  const loadPlayground = useCallback(async () => {
+    if (!id) return;
 
-  const toggleEnabled = useCallback(() => {
-    console.log("Toggling AI suggestions");
-    setState((prev) => ({ ...prev, isEnabled: !prev.isEnabled }));
-  }, []);
+    try {
+      setIsLoading(true);
+      setError(null);
 
-  const fetchSuggestion = useCallback(async (type: string, editor: any) => {
-    console.log("Fetching AI suggestion...");
-    console.log("AI Suggestions Enabled:", state.isEnabled);
-    console.log("Editor Instance Available:", !!editor);
+      const data = await getPlaygroundById(id);
+    //   @ts-ignore
+      setPlaygroundData(data);
 
-    // Use functional state update to get fresh state
-    setState((currentState) => {
-      if (!currentState.isEnabled) {
-        console.warn("AI suggestions are disabled.");
-        return currentState;
+      const rawContent = data?.templateFiles?.[0]?.content;
+      if (typeof rawContent === "string") {
+        const parsedContent = JSON.parse(rawContent);
+        setTemplateData(parsedContent);
+        toast.success("Playground loaded successfully");
+        return;
       }
 
-      if (!editor) {
-        console.warn("Editor instance is not available.");
-        return currentState;
+      // Load template from API if not in saved content
+      const res = await fetch(`/api/template/${id}`);
+      if (!res.ok) throw new Error(`Failed to load template: ${res.status}`);
+
+      const templateRes = await res.json();
+      if (templateRes.templateJson && Array.isArray(templateRes.templateJson)) {
+        setTemplateData({
+          folderName: "Root",
+          items: templateRes.templateJson,
+        });
+      } else {
+        setTemplateData(templateRes.templateJson || {
+          folderName: "Root",
+          items: [],
+        });
       }
 
-      const model = editor.getModel();
-      const cursorPosition = editor.getPosition();
+      toast.success("Template loaded successfully");
+    } catch (error) {
+      console.error("Error loading playground:", error);
+      setError("Failed to load playground data");
+      toast.error("Failed to load playground data");
+    } finally {
+      setIsLoading(false);
+    }
+  }, [id]);
 
-      if (!model || !cursorPosition) {
-        console.warn("Editor model or cursor position is not available.");
-        return currentState;
-      }
+  const saveTemplateData = useCallback(async (data: TemplateFolder) => {
+    try {
+      await SaveUpdatedCode(id, data);
+      setTemplateData(data);
+      toast.success("Changes saved successfully");
+    } catch (error) {
+      console.error("Error saving template data:", error);
+      toast.error("Failed to save changes");
+      throw error;
+    }
+  }, [id]);
 
-      // Set loading state immediately
-      const newState = { ...currentState, isLoading: true };
-
-      // Perform the async operation
-      (async () => {
-        try {
-          const payload = {
-            fileContent: model.getValue(),
-            cursorLine: cursorPosition.lineNumber - 1,
-            cursorColumn: cursorPosition.column - 1,
-            suggestionType: type,
-          };
-          console.log("Request payload:", payload);
-
-          const response = await fetch("/api/code-suggestion", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          });
-
-          if (!response.ok) {
-            throw new Error(`API responded with status ${response.status}`);
-          }
-
-          const data = await response.json();
-          console.log("API response:", data);
-
-          if (data.suggestion) {
-            const suggestionText = data.suggestion.trim();
-            setState((prev) => ({
-              ...prev,
-              suggestion: suggestionText,
-              position: {
-                line: cursorPosition.lineNumber,
-                column: cursorPosition.column,
-              },
-              isLoading: false,
-            }));
-          } else {
-            console.warn("No suggestion received from API.");
-            setState((prev) => ({ ...prev, isLoading: false }));
-          }
-        } catch (error) {
-          console.error("Error fetching code suggestion:", error);
-          setState((prev) => ({ ...prev, isLoading: false }));
-        }
-      })();
-
-      return newState;
-    });
-  }, []); // Remove state.isEnabled from dependencies to prevent stale closures
-
-  const acceptSuggestion = useCallback(
-    (editor: any, monaco: any) => {
-      setState((currentState) => {
-        if (!currentState.suggestion || !currentState.position || !editor || !monaco) {
-          return currentState;
-        }
-
-        const { line, column } = currentState.position;
-        const sanitizedSuggestion = currentState.suggestion.replace(/^\d+:\s*/gm, "");
-
-        editor.executeEdits("", [
-          {
-            range: new monaco.Range(line, column, line, column),
-            text: sanitizedSuggestion,
-            forceMoveMarkers: true,
-          },
-        ]);
-
-        // Clear decorations
-        if (editor && currentState.decoration.length > 0) {
-          editor.deltaDecorations(currentState.decoration, []);
-        }
-
-        return {
-          ...currentState,
-          suggestion: null,
-          position: null,
-          decoration: [],
-        };
-      });
-    },
-    []
-  );
-
-  const rejectSuggestion = useCallback((editor: any) => {
-    setState((currentState) => {
-      if (editor && currentState.decoration.length > 0) {
-        editor.deltaDecorations(currentState.decoration, []);
-      }
-      return {
-        ...currentState,
-        suggestion: null,
-        position: null,
-        decoration: [],
-      };
-    });
-  }, []);
-
-  const clearSuggestion = useCallback((editor: any) => {
-    setState((currentState) => {
-      if (editor && currentState.decoration.length > 0) {
-        editor.deltaDecorations(currentState.decoration, []);
-      }
-      return {
-        ...currentState,
-        suggestion: null,
-        position: null,
-        decoration: [],
-      };
-    });
-  }, []);
+  useEffect(() => {
+    loadPlayground();
+  }, [loadPlayground]);
 
   return {
-    ...state,
-    toggleEnabled,
-    fetchSuggestion,
-    acceptSuggestion,
-    rejectSuggestion,
-    clearSuggestion,
+    playgroundData,
+    templateData,
+    isLoading,
+    error,
+    loadPlayground,
+    saveTemplateData,
   };
 };
