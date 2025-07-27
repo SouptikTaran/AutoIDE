@@ -35,6 +35,7 @@ import {
 } from "lucide-react";
 import React from "react";
 import { cn } from "@/lib/utils";
+import { AIChatSidePanel } from "@/features/ai-chat/components/ai-chat-sidepanel";
 // import { AIChatSidePanel } from "@/features/ai-chat/components/ai-chat-sidepanel";
 
 
@@ -192,7 +193,7 @@ const ToggleAI: React.FC<ToggleAIProps> = ({
         </DropdownMenuContent>
       </DropdownMenu>
 
-      {/* <AIChatSidePanel
+      <AIChatSidePanel
         isOpen={isChatOpen}
         onClose={() => setIsChatOpen(false)}
         onInsertCode={handleInsertCode}
@@ -202,7 +203,7 @@ const ToggleAI: React.FC<ToggleAIProps> = ({
         activeFileLanguage="TypeScript" // Assuming TypeScript as the language
         cursorPosition={cursorPosition}
         theme="dark"
-      /> */}
+      />
     </>
   );
 };

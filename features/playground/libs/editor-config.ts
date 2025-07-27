@@ -272,18 +272,18 @@ export const defaultEditorOptions = {
   // Layout
   minimap: { 
     enabled: true,
-    size: "proportional",
-    showSlider: "mouseover"
+    size: "proportional" as const,
+    showSlider: "mouseover" as const
   },
   scrollBeyondLastLine: false,
   automaticLayout: true,
   padding: { top: 16, bottom: 16 },
   
   // Line settings
-  lineNumbers: "on",
+  lineNumbers: "on" as const,
   lineHeight: 20,
-  renderLineHighlight: "all",
-  renderWhitespace: "selection",
+  renderLineHighlight: "all" as const,
+  renderWhitespace: "selection" as const,
   
   // Indentation
   tabSize: 2,
@@ -291,9 +291,9 @@ export const defaultEditorOptions = {
   detectIndentation: true,
   
   // Word wrapping
-  wordWrap: "on",
+  wordWrap: "on" as const,
   wordWrapColumn: 120,
-  wrappingIndent: "indent",
+  wrappingIndent: "indent" as const,
   
   // Code folding
   folding: true,
@@ -345,16 +345,16 @@ export const defaultEditorOptions = {
   accessibilitySupport: "auto",
   
   // Cursor
-  cursorBlinking: "smooth",
-  cursorSmoothCaretAnimation: true,
-  cursorStyle: "line",
+  cursorBlinking: "smooth" as const,
+  cursorSmoothCaretAnimation: "on" as const,
+  cursorStyle: "line" as const,
   cursorWidth: 2,
   
   // Find
   find: {
     addExtraSpaceOnTop: false,
-    autoFindInSelection: "never",
-    seedSearchStringFromSelection: "always"
+    autoFindInSelection: "never" as const,
+    seedSearchStringFromSelection: "always" as const
   },
   
   // Hover
