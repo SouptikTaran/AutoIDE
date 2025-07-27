@@ -15,7 +15,33 @@ import { createPlaygroundFromGitHub } from "@/features/playground/actions";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-const AddRepo = () => {
+interface PlaygroundData {
+  id: string;
+  title: string;
+  description: string | null;
+  template: string;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string;
+  user?: {
+    id: string;
+    name: string | null;
+    email: string;
+    image: string | null;
+    role: string;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+  Starmark?: Array<{
+    isMarked: boolean;
+  }>;
+}
+
+interface AddRepoProps {
+  onProjectImported?: (project: PlaygroundData) => void;
+}
+
+const AddRepo = ({ onProjectImported }: AddRepoProps) => {
   const router = useRouter();
 
   const handleImport = async (repoData: GitHubRepositoryData) => {
@@ -36,6 +62,12 @@ const AddRepo = () => {
 
       if (playground) {
         toast.success(`Successfully imported ${repoData.name}!`);
+        
+        // Call the callback if provided
+        if (onProjectImported) {
+          onProjectImported(playground as PlaygroundData);
+        }
+        
         router.push(`/playground/${playground.id}`);
       }
     } catch (error) {

@@ -19,7 +19,33 @@ type ValidTemplate =
   | "TUTORIALKIT" | "TRES" | "BOLT_VITE_REACT" | "BOLT_EXPO" 
   | "BOLT_QWIK" | "BOLT_REMOTION" | "RXJS" | "NODEMON" | "EGG" | "TEST";
 
-const AddNewButton = () => {
+interface PlaygroundData {
+  id: string;
+  title: string;
+  description: string | null;
+  template: string;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string;
+  user?: {
+    id: string;
+    name: string | null;
+    email: string;
+    image: string | null;
+    role: string;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+  Starmark?: Array<{
+    isMarked: boolean;
+  }>;
+}
+
+interface AddNewButtonProps {
+  onProjectCreated?: (project: PlaygroundData) => void;
+}
+
+const AddNewButton = ({ onProjectCreated }: AddNewButtonProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isCreating, setIsCreating] = useState(false)
   const [selectedTemplate, setSelectedTemplate] = useState<{
@@ -53,6 +79,11 @@ const AddNewButton = () => {
       
       console.log("Creating new playground:", data)
       setIsModalOpen(false)
+      
+      // Call the callback if provided
+      if (onProjectCreated && res) {
+        onProjectCreated(res as PlaygroundData);
+      }
       
       // Small delay to show success message before redirect
       setTimeout(() => {

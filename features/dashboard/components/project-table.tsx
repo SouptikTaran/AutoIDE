@@ -40,12 +40,35 @@ import { MoreHorizontal, Edit3, Trash2, ExternalLink, Copy, Download, Eye } from
 import { toast } from "sonner"
 import { MarkedToggleButton } from "./toggle-star"
 
+interface PlaygroundData {
+  id: string;
+  title: string;
+  description: string | null;
+  template: string;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string;
+  user?: {
+    id: string;
+    name: string | null;
+    email: string;
+    image: string | null;
+    role: string;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+  Starmark?: Array<{
+    isMarked: boolean;
+  }>;
+}
+
 interface ProjectTableProps {
-  projects: Project[]
-  onUpdateProject?: (id: string, data: { title: string; description: string }) => Promise<void>
-  onDeleteProject?: (id: string) => Promise<void>
-  onDuplicateProject?: (id: string) => Promise<void>
+  playgrounds: PlaygroundData[]
+  onEdit?: (id: string, data: { title: string; description: string }) => Promise<void>
+  onDelete?: (id: string) => Promise<void>
+  onDuplicate?: (id: string) => Promise<void>
   onMarkasFavorite?: (id: string) => Promise<void>
+  isLoading?: boolean
 }
 
 interface EditProjectData {
@@ -54,19 +77,21 @@ interface EditProjectData {
 }
 
 export default function ProjectTable({
-  projects,
-  onUpdateProject,
-  onDeleteProject,
-  onDuplicateProject,
+  playgrounds,
+  onEdit,
+  onDelete,
+  onDuplicate,
   onMarkasFavorite,
+  isLoading: parentLoading = false,
 }: ProjectTableProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [editDialogOpen, setEditDialogOpen] = useState(false)
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
+  const [selectedProject, setSelectedProject] = useState<PlaygroundData | null>(null)
   const [editData, setEditData] = useState<EditProjectData>({ title: "", description: "" })
   const [isLoading, setIsLoading] = useState(false)
   const [favoutrie, setFavourite] = useState(false)
-  const handleEditClick = (project: Project) => {
+  
+  const handleEditClick = (project: PlaygroundData) => {
     setSelectedProject(project)
     setEditData({
       title: project.title,
@@ -75,18 +100,17 @@ export default function ProjectTable({
     setEditDialogOpen(true)
   }
 
-  const handleDeleteClick = async (project: Project) => {
+  const handleDeleteClick = async (project: PlaygroundData) => {
     setSelectedProject(project)
-
     setDeleteDialogOpen(true)
   }
 
   const handleUpdateProject = async () => {
-    if (!selectedProject || !onUpdateProject) return
+    if (!selectedProject || !onEdit) return
 
     setIsLoading(true)
     try {
-      await onUpdateProject(selectedProject.id, editData)
+      await onEdit(selectedProject.id, editData)
       setEditDialogOpen(false)
       setSelectedProject(null)
       toast.success("Project updated successfully")
@@ -114,11 +138,11 @@ export default function ProjectTable({
   }
 
   const handleDeleteProject = async () => {
-    if (!selectedProject || !onDeleteProject) return
+    if (!selectedProject || !onDelete) return
 
     setIsLoading(true)
     try {
-      await onDeleteProject(selectedProject.id)
+      await onDelete(selectedProject.id)
       setDeleteDialogOpen(false)
       setSelectedProject(null)
       toast.success("Project deleted successfully")
@@ -130,12 +154,12 @@ export default function ProjectTable({
     }
   }
 
-  const handleDuplicateProject = async (project: Project) => {
-    if (!onDuplicateProject) return
+  const handleDuplicateProject = async (project: PlaygroundData) => {
+    if (!onDuplicate) return
 
     setIsLoading(true)
     try {
-      await onDuplicateProject(project.id)
+      await onDuplicate(project.id)
       toast.success("Project duplicated successfully")
     } catch (error) {
       toast.error("Failed to duplicate project")
@@ -165,34 +189,38 @@ export default function ProjectTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {projects.map((project) => (
+            {playgrounds
+              .filter((project) => project && project.id && project.title) // Safety filter
+              .map((project: PlaygroundData) => (
               <TableRow key={project.id}>
                 <TableCell className="font-medium">
                   <div className="flex flex-col">
                     <Link href={`/playground/${project.id}`} className="hover:underline">
                       <span className="font-semibold">{project.title}</span>
                     </Link>
-                    <span className="text-sm text-gray-500 line-clamp-1">{project.description}</span>
+                    <span className="text-sm text-gray-500 line-clamp-1">{project.description || "No description"}</span>
                   </div>
                 </TableCell>
                 <TableCell>
                   <Badge variant="outline" className="bg-[#E93F3F15] text-[#E93F3F] border-[#E93F3F]">
-                    {project.template}
+                    {project.template || "Unknown"}
                   </Badge>
                 </TableCell>
-                <TableCell>{format(new Date(project.createdAt), "MMM d, yyyy")}</TableCell>
+                <TableCell>
+                  {project.createdAt ? format(new Date(project.createdAt), "MMM d, yyyy") : "Unknown"}
+                </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">
                     <div className="w-8 h-8 rounded-full overflow-hidden">
                       <Image
-                        src={project.user.image || "/placeholder.svg"}
-                        alt={project.user.name}
+                        src={project.user?.image || "/placeholder.svg"}
+                        alt={project.user?.name || "User avatar"}
                         width={32}
                         height={32}
                         className="object-cover"
                       />
                     </div>
-                    <span className="text-sm">{project.user.name}</span>
+                    <span className="text-sm">{project.user?.name || "Unknown User"}</span>
                   </div>
                 </TableCell>
                 <TableCell>
@@ -205,7 +233,7 @@ export default function ProjectTable({
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-48">
                       <DropdownMenuItem asChild>
-                        <MarkedToggleButton markedForRevision={project.Starmark[0]?.isMarked} id={project.id} />
+                        <MarkedToggleButton markedForRevision={project.Starmark?.[0]?.isMarked || false} id={project.id} />
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
                         <Link href={`/playground/${project.id}`} className="flex items-center">
