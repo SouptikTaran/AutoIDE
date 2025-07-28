@@ -7,6 +7,18 @@
   ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)
   ![React](https://img.shields.io/badge/React-19.1.0-61DAFB?style=flat-square&logo=react)
   ![AI Powered](https://img.shields.io/badge/AI-Powered-green?style=flat-square)
+  
+  <!-- Collaboration Badges -->
+  ![Contributors Welcome](https://img.shields.io/badge/Contributors-Welcome-brightgreen?style=for-the-badge&logo=github)
+  ![Open Source](https://img.shields.io/badge/Open_Source-MIT_License-blue?style=for-the-badge&logo=opensourceinitiative)
+  ![Good First Issues](https://img.shields.io/badge/Good_First_Issues-Available-orange?style=for-the-badge&logo=goodfirst)
+  
+  **🤝 We're actively looking for contributors! Join our growing community of developers.**
+  
+  [⭐ Star Us](https://github.com/SouptikTaran/AutoIDE) • 
+  [🍴 Fork & Contribute](https://github.com/SouptikTaran/AutoIDE/fork) • 
+  [💬 Join Discussions](https://github.com/SouptikTaran/AutoIDE/discussions) • 
+  [🐛 Report Issues](https://github.com/SouptikTaran/AutoIDE/issues)
 </div>
 
 ---
@@ -21,6 +33,21 @@ Web Coder is a **complete development environment** that runs entirely in your b
 - 🔗 **GitHub Integration**: Import repositories with one click
 - ⚡ **Instant Preview**: See your apps running live as you code
 - 🌐 **Universal Access**: Code from anywhere, on any device
+
+---
+
+> ## 🤝 **Open for Collaboration!**
+> 
+> **We're building the future of web development together!** Whether you're a beginner or expert, your contributions matter.
+> 
+> 🌟 **What we need help with:**
+> - 🐛 Bug fixes and testing
+> - ✨ New features and integrations
+> - 📚 Documentation improvements
+> - 🎨 UI/UX enhancements
+> - 🧪 Writing tests
+> 
+> 🚀 **Ready to contribute?** Check out our [Contributing Guide](CONTRIBUTING.md) and look for [Good First Issues](https://github.com/SouptikTaran/AutoIDE/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)!
 
 ---
 
@@ -237,7 +264,7 @@ For complete contributing guidelines, development setup, coding standards, and c
 - 💬 **[GitHub Discussions](https://github.com/SouptikTaran/AutoIDE/discussions)** - Ask questions and share ideas
 - 🐛 **[Issues](https://github.com/SouptikTaran/AutoIDE/issues)** - Report bugs and request features
 - 📖 **[Documentation](DOCUMENTATION.md)** - Complete project documentation
-- 📧 **Email**: contribute@webcoder.dev
+- 📧 **Email**: mr.souptiktaran@gmail.com
 
 ---
 
@@ -260,14 +287,40 @@ For complete contributing guidelines, development setup, coding standards, and c
   
 ## 🚀 **Ready to Experience the Future of Development?**
 
-| **[📖 Full Documentation](https://github.com/SouptikTaran/AutoIDE/blob/main/README.md)** | **[💻 Source Code](https://github.com/SouptikTaran/AutoIDE)**
+### **🎮 Try It Now**
+**[🌐 Live Demo](https://web-coder.vercel.app)** | **[📖 Full Documentation](DOCUMENTATION.md)** | **[💻 Source Code](https://github.com/SouptikTaran/AutoIDE)**
+
+### **🤝 Join Our Community**
+**We're always looking for passionate developers to join our mission!**
+
+[![Contributors](https://img.shields.io/github/contributors/SouptikTaran/AutoIDE?style=for-the-badge&logo=github)](https://github.com/SouptikTaran/AutoIDE/graphs/contributors)
+[![Forks](https://img.shields.io/github/forks/SouptikTaran/AutoIDE?style=for-the-badge&logo=github)](https://github.com/SouptikTaran/AutoIDE/network/members)
+[![Stars](https://img.shields.io/github/stars/SouptikTaran/AutoIDE?style=for-the-badge&logo=github)](https://github.com/SouptikTaran/AutoIDE/stargazers)
+[![Issues](https://img.shields.io/github/issues/SouptikTaran/AutoIDE?style=for-the-badge&logo=github)](https://github.com/SouptikTaran/AutoIDE/issues)
+
+**Quick Start for Contributors:**
+
+[🍴 **Fork Repository**](https://github.com/SouptikTaran/AutoIDE/fork) | 
+[📋 **Contributing Guide**](CONTRIBUTING.md) | 
+[🐛 **Good First Issues**](https://github.com/SouptikTaran/AutoIDE/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) | 
+[💬 **Join Discussions**](https://github.com/SouptikTaran/AutoIDE/discussions)
 
 ---
 
-### **Contact Information**
+### **💌 Get In Touch**
 **Project Lead**: Souptik Taran  
+**Email**: mr.souptiktaran@gmail.com  
 **Repository**: [AutoIDE on GitHub](https://github.com/SouptikTaran/AutoIDE)  
 
-*Built with ❤️ using Next.js, React, TypeScript, and AI*
+### **🌟 Show Your Support**
+If you find this project helpful, please consider:
+- ⭐ **Starring the repository**
+- 🍴 **Forking and contributing**
+- 🐛 **Reporting bugs and issues**
+- 💡 **Suggesting new features**
+- 📢 **Sharing with fellow developers**
+
+*Built with ❤️ using Next.js, React, TypeScript, and AI*  
+*🤝 Made better by our amazing community of contributors*
 
 </div>
