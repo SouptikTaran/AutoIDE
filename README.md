@@ -1,7 +1,5 @@
-# Web Coder - Project Overview
-
 <div align="center">
-  <h1>🚀 Web Coder</h1>
+  <h1>🚀 AutoIDE</h1>
   <p><strong>Advanced Cloud-Based IDE with AI-Powered Development</strong></p>
   <p>A modern, browser-based development environment that runs Node.js applications directly in the browser</p>
   
@@ -13,7 +11,7 @@
 
 ---
 
-## 🎯 **What is Web Coder?**
+## 🎯 **What is ?**AutoIDE
 
 Web Coder is a **complete development environment** that runs entirely in your browser. Think VS Code + GitHub + AI Assistant all combined into one powerful platform.
 
