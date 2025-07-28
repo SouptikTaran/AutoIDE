@@ -204,6 +204,43 @@ npm run dev
 
 ---
 
+## 🤝 **Contributing**
+
+We welcome contributions from developers of all skill levels! Whether you're fixing bugs, adding features, improving documentation, or sharing ideas, your contributions make Web Coder better for everyone.
+
+### **Quick Start for Contributors**
+1. **🍴 Fork the repository** and clone it locally
+2. **🛠️ Set up your development environment** following our [setup guide](#-quick-setup)
+3. **🔍 Find an issue to work on** or propose a new feature
+4. **🚀 Make your changes** and submit a pull request
+
+### **Ways to Contribute**
+- 🐛 **Report bugs** and help us fix them
+- 💡 **Suggest new features** and improvements  
+- 📚 **Improve documentation** and help others learn
+- 🎨 **Enhance UI/UX** and make the platform more beautiful
+- 🧪 **Write tests** and improve code quality
+- 🌍 **Help with translations** and internationalization
+
+### **Good First Issues**
+New to open source? Look for issues labeled:
+- ![Good First Issue](https://img.shields.io/badge/-good%20first%20issue-7057ff) Perfect for beginners
+- ![Help Wanted](https://img.shields.io/badge/-help%20wanted-008672) We need your expertise
+- ![Documentation](https://img.shields.io/badge/-documentation-0075ca) Improve our docs
+
+**[👀 Browse Good First Issues](https://github.com/SouptikTaran/AutoIDE/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)**
+
+### **Detailed Guidelines**
+For complete contributing guidelines, development setup, coding standards, and community guidelines, see our **[Contributing Guide](CONTRIBUTING.md)**.
+
+### **Community & Support**
+- 💬 **[GitHub Discussions](https://github.com/SouptikTaran/AutoIDE/discussions)** - Ask questions and share ideas
+- 🐛 **[Issues](https://github.com/SouptikTaran/AutoIDE/issues)** - Report bugs and request features
+- 📖 **[Documentation](DOCUMENTATION.md)** - Complete project documentation
+- 📧 **Email**: contribute@webcoder.dev
+
+---
+
 ## 🎖️ **Recognition & Validation**
 
 ### **Industry Standards**
