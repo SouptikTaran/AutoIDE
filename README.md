@@ -288,7 +288,7 @@ For complete contributing guidelines, development setup, coding standards, and c
 ## 🚀 **Ready to Experience the Future of Development?**
 
 ### **🎮 Try It Now**
-**[🌐 Live Demo](https://web-coder.vercel.app)** | **[📖 Full Documentation](DOCUMENTATION.md)** | **[💻 Source Code](https://github.com/SouptikTaran/AutoIDE)**
+**[🌐 Live Demo]()** | **[📖 Full Documentation](DOCUMENTATION.md)** | **[💻 Source Code](https://github.com/SouptikTaran/AutoIDE)**
 
 ### **🤝 Join Our Community**
 **We're always looking for passionate developers to join our mission!**
