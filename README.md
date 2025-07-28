@@ -11,7 +11,7 @@
 
 ---
 
-## 🎯 **What is ?**AutoIDE
+## 🎯 **What is AutoIDE ?**
 
 Web Coder is a **complete development environment** that runs entirely in your browser. Think VS Code + GitHub + AI Assistant all combined into one powerful platform.
 
