@@ -25,47 +25,6 @@ Web Coder is a **complete development environment** that runs entirely in your b
 ---
 
 ## 🏗️ **System Architecture**
-
-```mermaid
-graph TB
-    subgraph "Frontend Layer"
-        A[React UI] --> B[Monaco Editor]
-        A --> C[File Explorer]
-        A --> D[Live Preview]
-        B --> E[AI Assistant]
-    end
-    
-    subgraph "Application Layer"
-        F[Next.js API Routes] --> G[Authentication]
-        F --> H[GitHub Integration]
-        F --> I[AI Services]
-    end
-    
-    subgraph "Runtime Layer"
-        J[WebContainer] --> K[Node.js Runtime]
-        J --> L[Virtual File System]
-        J --> M[Package Manager]
-    end
-    
-    subgraph "External Services"
-        N[GitHub API]
-        O[OpenRouter AI]
-        P[PostgreSQL]
-    end
-    
-    A --> F
-    F --> N
-    F --> O
-    F --> P
-    A --> J
-    
-    style A fill:#61dafb
-    style F fill:#000000
-    style J fill:#ff6b35
-    style N fill:#6cc644
-```
-
-### **Architecture Highlights:**
 ![alt text](image.png)
 
 #### **Frontend (React/Next.js)**
